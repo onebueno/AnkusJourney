@@ -20,7 +20,7 @@ private:
 public:
 	Heroe();
 	~Heroe();
-	Heroe(int x,int y);
+	Heroe(int x, int y);
 	Direcciones direccion;
 	void imprimir(BufferedGraphics^buffer, Bitmap^bmp);
 	void mover(BufferedGraphics^buffer, Bitmap^ bmpizquierda, Bitmap^ bmpderecha, Bitmap^ bmpparado, Bitmap^ bmpparadoizq);
@@ -64,15 +64,17 @@ void Heroe::imprimir(BufferedGraphics^ buffer, Bitmap^ bmp) {
 }
 
 void Heroe::mover(BufferedGraphics^ buffer, Bitmap^ bmpizquierda, Bitmap^ bmpderecha, Bitmap^ bmpparado, Bitmap^ bmpparadoizq) {
+	ancho = 79;
 	switch (direccion) {
 	case Direcciones::Derecha:
+		
 		imprimir(buffer, bmpderecha);
 		indicex++;
 
-		if (indicex > 6)
+		if (indicex > 5)
 			indicex = 0;
 
-		dx = 10;
+		dx = 25;
 		dy = 0;
 		ultimatecla = Derecha;
 		break;
@@ -82,16 +84,17 @@ void Heroe::mover(BufferedGraphics^ buffer, Bitmap^ bmpizquierda, Bitmap^ bmpder
 		imprimir(buffer, bmpizquierda);
 		indicex++;
 
-		if (indicex > 6)
+		if (indicex > 5)
 			indicex = 0;
 
-		dx = -10;
+		dx = -25;
 		dy = 0;
 		ultimatecla = Izquierda;
-		
+
 		break;
 
 	case Direcciones::Ninguna:
+		//ancho = 50;
 		dx = 0;
 		dy = 0;
 		switch (ultimatecla) {
@@ -104,14 +107,14 @@ void Heroe::mover(BufferedGraphics^ buffer, Bitmap^ bmpizquierda, Bitmap^ bmpder
 			break;
 		}
 	}
-	
+
 }
 
 void Heroe::parado(BufferedGraphics ^ buffer, Bitmap ^ bmp) {
 	ancho = 50;
-		indicex++;
-		if (indicex > 4)
-			indicex = 0;
-		imprimir(buffer, bmp);
+	indicex++;
+	if (indicex > 4)
+		indicex = 0;
+	imprimir(buffer, bmp);
 
 }
