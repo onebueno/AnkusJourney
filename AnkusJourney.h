@@ -1,5 +1,6 @@
 #pragma once
 #include "Heroe.h"
+
 namespace AnkusJourney {
 
 	using namespace System;
@@ -25,14 +26,13 @@ namespace AnkusJourney {
 		{
 			InitializeComponent();
 			//
-			//TODO: agregar código de constructor aquí
+			//TODO: agregar cÃ³digo de constructor aquÃ­
 			//
-
 		}
 
 	protected:
 		/// <summary>
-		/// Limpiar los recursos que se estén usando.
+		/// Limpiar los recursos que se estÃ©n usando.
 		/// </summary>
 		~AnkusJourney()
 		{
@@ -41,20 +41,20 @@ namespace AnkusJourney {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::Timer^ timer1;
+	private: System::Windows::Forms::Timer^  timer1;
 	protected:
-	private: System::ComponentModel::IContainer^ components;
+	private: System::ComponentModel::IContainer^  components;
 
 	private:
 		/// <summary>
-		/// Variable del diseñador necesaria.
+		/// Variable del diseÃ±ador necesaria.
 		/// </summary>
 
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
-		/// Método necesario para admitir el Diseñador. No se puede modificar
-		/// el contenido de este método con el editor de código.
+		/// MÃ©todo necesario para admitir el DiseÃ±ador. No se puede modificar
+		/// el contenido de este mÃ©todo con el editor de cÃ³digo.
 		/// </summary>
 		void InitializeComponent(void)
 		{
@@ -66,13 +66,13 @@ namespace AnkusJourney {
 			// 
 			this->timer1->Enabled = true;
 			this->timer1->Interval = 135;
-			this->timer1->Tick += gcnew System::EventHandler(this, &AnkusJourney::Timer1_Tick);
+			this->timer1->Tick += gcnew System::EventHandler(this, &AnkusJourney::timer1_Tick);
 			// 
 			// AnkusJourney
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(284, 261);
+			this->ClientSize = System::Drawing::Size(857, 386);
 			this->Name = L"AnkusJourney";
 			this->Text = L"AnkusJourney";
 			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &AnkusJourney::presionartecla);
@@ -81,37 +81,33 @@ namespace AnkusJourney {
 
 		}
 #pragma endregion
-	private: System::Void Timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
-
-		Graphics^ g = this->CreateGraphics();
+	private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
+		Graphics ^g = this->CreateGraphics();
 		BufferedGraphicsContext^ espacio = BufferedGraphicsManager::Current;
 		BufferedGraphics^ buffer = espacio->Allocate(g, this->ClientRectangle);
 		buffer->Graphics->Clear(Color::Red);
 
 
-		objheroe->parado(buffer, bmpparado);
+		
 		objheroe->mover(buffer, bmpizquierda, bmpderecha, bmpparado, bmpparadoizq);
 		buffer->Render(g);
-		delete buffer;
+		/*delete buffer;
 		delete espacio;
-		delete g;
+		delete g;*/
 	}
-
-	private: System::Void soltartecla(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+	private: System::Void soltartecla(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 		objheroe->direccion = Direcciones::Ninguna;
 	}
-	private: System::Void presionartecla(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+	private: System::Void presionartecla(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 		switch (e->KeyCode) {
 		case Keys::Left:
 			objheroe->direccion = Direcciones::Izquierda;
-				break;
+			break;
 		case Keys::Right:
 			objheroe->direccion = Direcciones::Derecha;
 			break;
 
-
 		}
-
 	}
 	};
 }
