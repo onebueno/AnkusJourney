@@ -1,2 +1,2 @@
 # AnkusJourney
-Prepairing the videogame
+Preparing the videogame
