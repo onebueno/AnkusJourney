@@ -1,7 +1,6 @@
 #pragma once
 #include "Heroe.h"
 
-//por si acaso le cambie el nombre al proyecto a AJ,por eso el namespace se llama así
 namespace AJ {
 
 	using namespace System;
@@ -17,20 +16,25 @@ namespace AJ {
 	public ref class AnkusJourney : public System::Windows::Forms::Form
 	{
 	private:
-		Heroe* objheroe = new Heroe(50,400);
-		Bitmap^ bmpparado = gcnew Bitmap("parado.png");
-		Bitmap^ bmpderecha = gcnew Bitmap("movederecha.png");
-		Bitmap^ bmpizquierda = gcnew Bitmap("moveizquierda.png");
-		Bitmap^ bmpparadoizq = gcnew Bitmap("paradoizquierda.png");
-		Bitmap^ corrupcion = gcnew Bitmap("corrupted.jpg");
-		Bitmap^ contaminacion = gcnew Bitmap("pollution.png");
+		Heroe* objheroe;
+		Bitmap^ bmpparado;
+		Bitmap^ bmpderecha;
+		Bitmap^ bmpizquierda;
+		Bitmap^ bmpparadoizq;
+		Bitmap^ corrupcion;
+		Bitmap^ contaminacion;
 	public:
 		AnkusJourney(void)
 		{
-			InitializeComponent();
-			//
 			//TODO: agregar código de constructor aquí
-			//
+			InitializeComponent();
+			objheroe = new Heroe(50, 400);
+			bmpparado = gcnew Bitmap("parado.png");
+			bmpderecha = gcnew Bitmap("movederecha.png");
+			bmpizquierda = gcnew Bitmap("moveizquierda.png");
+			bmpparadoizq = gcnew Bitmap("paradoizquierda.png");
+			corrupcion = gcnew Bitmap("corrupted.jpg");
+			contaminacion = gcnew Bitmap("pollution.png");
 		}
 
 	protected:
@@ -45,7 +49,7 @@ namespace AJ {
 			}
 		}
 	private: System::Windows::Forms::Timer^  timer1;
-	protected:
+
 	private: System::ComponentModel::IContainer^  components;
 
 	private:
@@ -84,13 +88,14 @@ namespace AJ {
 		}
 #pragma endregion
 	private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
+		
 		Graphics ^g = this->CreateGraphics();
 		BufferedGraphicsContext^ espacio = BufferedGraphicsManager::Current;
 		BufferedGraphics^ buffer = espacio->Allocate(g, this->ClientRectangle);
 		buffer->Graphics->Clear(Color::White);
 		buffer->Graphics->DrawImage(contaminacion, 0, -50, contaminacion->Width*1.55, contaminacion->Height*1.3);
 
-		objheroe->mover(buffer, bmpizquierda, bmpderecha, bmpparado, bmpparadoizq);
+		objheroe->mover(buffer, bmpizquierda, bmpderecha, bmpparado, bmpparadoizq,g);
 		buffer->Render(g);
 		delete buffer;
 		delete espacio;
