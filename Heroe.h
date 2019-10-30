@@ -1,9 +1,7 @@
 #pragma once
 using namespace System::Drawing;
 
-enum Direcciones {
-	Ninguna, Izquierda, Derecha
-};
+enum Direcciones {Ninguna, Izquierda, Derecha};
 
 class Heroe {
 private:
@@ -23,7 +21,7 @@ public:
 	Heroe(int x, int y);
 	Direcciones direccion;
 	void imprimir(BufferedGraphics^buffer, Bitmap^bmp);
-	void mover(BufferedGraphics^buffer, Bitmap^ bmpizquierda, Bitmap^ bmpderecha, Bitmap^ bmpparado, Bitmap^ bmpparadoizq);
+	void mover(BufferedGraphics^buffer, Bitmap^ bmpizquierda, Bitmap^ bmpderecha, Bitmap^ bmpparado, Bitmap^ bmpparadoizq, Graphics^ g);
 	void parado(BufferedGraphics^ buffer, Bitmap^ bmp);
 	int getx();
 	int gety();
@@ -59,11 +57,9 @@ void Heroe::imprimir(BufferedGraphics^ buffer, Bitmap^ bmp) {
 	Rectangle porcion = Rectangle(indicex * ancho, indicey * alto, ancho, alto);
 	Rectangle aumento = Rectangle(x, y, ancho * 2, alto * 2);
 	buffer->Graphics->DrawImage(bmp, aumento, porcion, GraphicsUnit::Pixel);
-	x += dx;
-	y += dy;
 }
 
-void Heroe::mover(BufferedGraphics^ buffer, Bitmap^ bmpizquierda, Bitmap^ bmpderecha, Bitmap^ bmpparado, Bitmap^ bmpparadoizq) {
+void Heroe::mover(BufferedGraphics^ buffer, Bitmap^ bmpizquierda, Bitmap^ bmpderecha, Bitmap^ bmpparado, Bitmap^ bmpparadoizq,Graphics^g) {
 	ancho = 79;
 	switch (direccion) {
 	case Direcciones::Derecha:
@@ -73,9 +69,11 @@ void Heroe::mover(BufferedGraphics^ buffer, Bitmap^ bmpizquierda, Bitmap^ bmpder
 
 		if (indicex > 5)
 			indicex = 0;
-
-		dx = 50;
-		dy = 0;
+		if (x + ancho * 2 < g->VisibleClipBounds.Width) {
+			dx = 50;
+			dy = 0;
+			x += dx;
+		}
 		ultimatecla = Derecha;
 		break;
 
@@ -86,9 +84,13 @@ void Heroe::mover(BufferedGraphics^ buffer, Bitmap^ bmpizquierda, Bitmap^ bmpder
 
 		if (indicex > 5)
 			indicex = 0;
-
-		dx = -50;
-		dy = 0;
+		if (x > 0)
+		{
+			dx = -50;
+			dy = 0;
+			x += dx;
+		}
+		
 		ultimatecla = Izquierda;
 
 		break;
