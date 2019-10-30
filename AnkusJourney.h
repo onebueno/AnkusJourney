@@ -1,7 +1,8 @@
 #pragma once
 #include "Heroe.h"
 
-namespace AnkusJourney {
+//por si acaso le cambie el nombre al proyecto a AJ,por eso el namespace se llama así
+namespace AJ {
 
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -16,11 +17,13 @@ namespace AnkusJourney {
 	public ref class AnkusJourney : public System::Windows::Forms::Form
 	{
 	private:
-		Heroe* objheroe = new Heroe(50, 50);
+		Heroe* objheroe = new Heroe(50,400);
 		Bitmap^ bmpparado = gcnew Bitmap("parado.png");
 		Bitmap^ bmpderecha = gcnew Bitmap("movederecha.png");
 		Bitmap^ bmpizquierda = gcnew Bitmap("moveizquierda.png");
 		Bitmap^ bmpparadoizq = gcnew Bitmap("paradoizquierda.png");
+		Bitmap^ corrupcion = gcnew Bitmap("corrupted.jpg");
+		Bitmap^ contaminacion = gcnew Bitmap("pollution.png");
 	public:
 		AnkusJourney(void)
 		{
@@ -65,14 +68,13 @@ namespace AnkusJourney {
 			// timer1
 			// 
 			this->timer1->Enabled = true;
-			this->timer1->Interval = 135;
 			this->timer1->Tick += gcnew System::EventHandler(this, &AnkusJourney::timer1_Tick);
 			// 
 			// AnkusJourney
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(857, 386);
+			this->ClientSize = System::Drawing::Size(1081, 554);
 			this->Name = L"AnkusJourney";
 			this->Text = L"AnkusJourney";
 			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &AnkusJourney::presionartecla);
@@ -85,15 +87,14 @@ namespace AnkusJourney {
 		Graphics ^g = this->CreateGraphics();
 		BufferedGraphicsContext^ espacio = BufferedGraphicsManager::Current;
 		BufferedGraphics^ buffer = espacio->Allocate(g, this->ClientRectangle);
-		buffer->Graphics->Clear(Color::Red);
+		buffer->Graphics->Clear(Color::White);
+		buffer->Graphics->DrawImage(contaminacion, 0, -50, contaminacion->Width*1.55, contaminacion->Height*1.3);
 
-
-		
 		objheroe->mover(buffer, bmpizquierda, bmpderecha, bmpparado, bmpparadoizq);
 		buffer->Render(g);
-		/*delete buffer;
+		delete buffer;
 		delete espacio;
-		delete g;*/
+		delete g;
 	}
 	private: System::Void soltartecla(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 		objheroe->direccion = Direcciones::Ninguna;
@@ -111,3 +112,4 @@ namespace AnkusJourney {
 	}
 	};
 }
+
