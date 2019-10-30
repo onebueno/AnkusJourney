@@ -67,34 +67,33 @@ void Heroe::mover(BufferedGraphics^ buffer, Bitmap^ bmpizquierda, Bitmap^ bmpder
 	ancho = 79;
 	switch (direccion) {
 	case Direcciones::Derecha:
-		
+
 		imprimir(buffer, bmpderecha);
 		indicex++;
 
 		if (indicex > 5)
 			indicex = 0;
 
-		dx = 25;
+		dx = 50;
 		dy = 0;
 		ultimatecla = Derecha;
 		break;
 
 	case Direcciones::Izquierda:
-		
+
 		imprimir(buffer, bmpizquierda);
 		indicex++;
 
 		if (indicex > 5)
 			indicex = 0;
 
-		dx = -25;
+		dx = -50;
 		dy = 0;
 		ultimatecla = Izquierda;
 
 		break;
 
 	case Direcciones::Ninguna:
-		//ancho = 50;
 		dx = 0;
 		dy = 0;
 		switch (ultimatecla) {
