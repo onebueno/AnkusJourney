@@ -23,6 +23,9 @@ namespace AJ {
 		Bitmap^ bmpparadoizq;
 		Bitmap^ corrupcion;
 		Bitmap^ contaminacion;
+		Bitmap^ criminal;
+		Bitmap^ criminal2;
+		int nivel;
 	public:
 		AnkusJourney(void)
 		{
@@ -35,6 +38,9 @@ namespace AJ {
 			bmpparadoizq = gcnew Bitmap("paradoizquierda.png");
 			corrupcion = gcnew Bitmap("corrupted.jpg");
 			contaminacion = gcnew Bitmap("pollution.png");
+			criminal = gcnew Bitmap("criminal.png");
+			criminal2 = gcnew Bitmap("criminal2.png");
+			nivel = 1;
 		}
 
 	protected:
@@ -93,8 +99,18 @@ namespace AJ {
 		BufferedGraphicsContext^ espacio = BufferedGraphicsManager::Current;
 		BufferedGraphics^ buffer = espacio->Allocate(g, this->ClientRectangle);
 		buffer->Graphics->Clear(Color::White);
-		buffer->Graphics->DrawImage(contaminacion, 0, -50, contaminacion->Width*1.55, contaminacion->Height*1.3);
-
+		if (nivel == 1) {
+			buffer->Graphics->DrawImage(contaminacion, 0, -50, contaminacion->Width*1.55, contaminacion->Height*1.3);
+		}
+		if (nivel == 2) {
+			buffer->Graphics->DrawImage(criminal, -45, -85, criminal->Width, criminal->Height);
+		}
+		if (nivel == 3) {
+			buffer->Graphics->DrawImage(corrupcion, 0, 0, corrupcion->Width*0.60, corrupcion->Height*0.50);
+		}
+		/*if (nivel == 4) {
+			buffer->Graphics->DrawImage(criminal2, 0, 0, criminal2->Width*1.72, criminal2->Height*1.7);
+		}*/
 		objheroe->mover(buffer, bmpizquierda, bmpderecha, bmpparado, bmpparadoizq,g);
 		buffer->Render(g);
 		delete buffer;
@@ -117,4 +133,3 @@ namespace AJ {
 	}
 	};
 }
-
