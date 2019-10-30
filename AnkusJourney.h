@@ -1,6 +1,8 @@
 #pragma once
 #include "Heroe.h"
-namespace AnkusJourney {
+
+//por si acaso le cambie el nombre al proyecto a AJ,por eso el namespace se llama as√≠
+namespace AJ {
 
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -15,24 +17,25 @@ namespace AnkusJourney {
 	public ref class AnkusJourney : public System::Windows::Forms::Form
 	{
 	private:
-		Heroe* objheroe = new Heroe(50, 50);
+		Heroe* objheroe = new Heroe(50,400);
 		Bitmap^ bmpparado = gcnew Bitmap("parado.png");
 		Bitmap^ bmpderecha = gcnew Bitmap("movederecha.png");
 		Bitmap^ bmpizquierda = gcnew Bitmap("moveizquierda.png");
 		Bitmap^ bmpparadoizq = gcnew Bitmap("paradoizquierda.png");
+		Bitmap^ corrupcion = gcnew Bitmap("corrupted.jpg");
+		Bitmap^ contaminacion = gcnew Bitmap("pollution.png");
 	public:
 		AnkusJourney(void)
 		{
 			InitializeComponent();
 			//
-			//TODO: agregar cÛdigo de constructor aquÌ
+			//TODO: agregar c√≥digo de constructor aqu√≠
 			//
-
 		}
 
 	protected:
 		/// <summary>
-		/// Limpiar los recursos que se estÈn usando.
+		/// Limpiar los recursos que se est√©n usando.
 		/// </summary>
 		~AnkusJourney()
 		{
@@ -41,20 +44,20 @@ namespace AnkusJourney {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::Timer^ timer1;
+	private: System::Windows::Forms::Timer^  timer1;
 	protected:
-	private: System::ComponentModel::IContainer^ components;
+	private: System::ComponentModel::IContainer^  components;
 
 	private:
 		/// <summary>
-		/// Variable del diseÒador necesaria.
+		/// Variable del dise√±ador necesaria.
 		/// </summary>
 
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
-		/// MÈtodo necesario para admitir el DiseÒador. No se puede modificar
-		/// el contenido de este mÈtodo con el editor de cÛdigo.
+		/// M√©todo necesario para admitir el Dise√±ador. No se puede modificar
+		/// el contenido de este m√©todo con el editor de c√≥digo.
 		/// </summary>
 		void InitializeComponent(void)
 		{
@@ -65,14 +68,13 @@ namespace AnkusJourney {
 			// timer1
 			// 
 			this->timer1->Enabled = true;
-			this->timer1->Interval = 135;
-			this->timer1->Tick += gcnew System::EventHandler(this, &AnkusJourney::Timer1_Tick);
+			this->timer1->Tick += gcnew System::EventHandler(this, &AnkusJourney::timer1_Tick);
 			// 
 			// AnkusJourney
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(284, 261);
+			this->ClientSize = System::Drawing::Size(1081, 554);
 			this->Name = L"AnkusJourney";
 			this->Text = L"AnkusJourney";
 			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &AnkusJourney::presionartecla);
@@ -81,37 +83,33 @@ namespace AnkusJourney {
 
 		}
 #pragma endregion
-	private: System::Void Timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
-
-		Graphics^ g = this->CreateGraphics();
+	private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
+		Graphics ^g = this->CreateGraphics();
 		BufferedGraphicsContext^ espacio = BufferedGraphicsManager::Current;
 		BufferedGraphics^ buffer = espacio->Allocate(g, this->ClientRectangle);
-		buffer->Graphics->Clear(Color::Red);
+		buffer->Graphics->Clear(Color::White);
+		buffer->Graphics->DrawImage(contaminacion, 0, -50, contaminacion->Width*1.55, contaminacion->Height*1.3);
 
-
-		objheroe->parado(buffer, bmpparado);
 		objheroe->mover(buffer, bmpizquierda, bmpderecha, bmpparado, bmpparadoizq);
 		buffer->Render(g);
 		delete buffer;
 		delete espacio;
 		delete g;
 	}
-
-	private: System::Void soltartecla(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+	private: System::Void soltartecla(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 		objheroe->direccion = Direcciones::Ninguna;
 	}
-	private: System::Void presionartecla(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+	private: System::Void presionartecla(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 		switch (e->KeyCode) {
 		case Keys::Left:
 			objheroe->direccion = Direcciones::Izquierda;
-				break;
+			break;
 		case Keys::Right:
 			objheroe->direccion = Direcciones::Derecha;
 			break;
 
-
 		}
-
 	}
 	};
 }
+
