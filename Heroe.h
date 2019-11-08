@@ -1,7 +1,7 @@
 #pragma once
 using namespace System::Drawing;
 
-enum Direcciones {Ninguna, Izquierda, Derecha,Ataque};
+enum Direcciones { Ninguna, Izquierda, Derecha, Ataque, Subir, Bajar};
 
 class Heroe {
 private:
@@ -19,8 +19,8 @@ public:
 	Heroe();
 	~Heroe();
 	Heroe(int x, int y);
-	void imprimir(BufferedGraphics^buffer, Bitmap^bmp);
-	void mover(BufferedGraphics^buffer, Bitmap^ bmpizquierda, Bitmap^ bmpderecha, Bitmap^ bmpparado, Bitmap^ bmpparadoizq,Bitmap^ ataque, Graphics^ g);
+	void imprimir(BufferedGraphics^ buffer, Bitmap^ bmp);
+	void mover(BufferedGraphics^ buffer, Bitmap^ bmpizquierda, Bitmap^ bmpderecha, Bitmap^ bmpparado, Bitmap^ bmpparadoizq, Bitmap^ ataque, Graphics^ g);
 	void parado(BufferedGraphics^ buffer, Bitmap^ bmp);
 	int getx();
 	int gety();
@@ -56,11 +56,11 @@ int Heroe::gety() {
 
 void Heroe::imprimir(BufferedGraphics^ buffer, Bitmap^ bmp) {
 	Rectangle porcion = Rectangle(indicex * ancho, indicey * alto, ancho, alto);
-	Rectangle aumento = Rectangle(x, y, ancho * 2, alto * 2 );
+	Rectangle aumento = Rectangle(x, y, ancho * 1.4, alto * 1.4);
 	buffer->Graphics->DrawImage(bmp, aumento, porcion, GraphicsUnit::Pixel);
 }
 
-void Heroe::mover(BufferedGraphics^ buffer, Bitmap^ bmpizquierda, Bitmap^ bmpderecha, Bitmap^ bmpparado, Bitmap^ bmpparadoizq,Bitmap^ ataque,Graphics^g) {
+void Heroe::mover(BufferedGraphics^ buffer, Bitmap^ bmpizquierda, Bitmap^ bmpderecha, Bitmap^ bmpparado, Bitmap^ bmpparadoizq, Bitmap^ ataque, Graphics^ g) {
 	ancho = 79;
 	ataque->MakeTransparent(ataque->GetPixel(0, 0));
 	switch (direccion) {
@@ -99,15 +99,21 @@ void Heroe::mover(BufferedGraphics^ buffer, Bitmap^ bmpizquierda, Bitmap^ bmpder
 		dx = 0;
 		dy = 0;
 		switch (ultimatecla) {
-			case Direcciones::Derecha:
-				parado(buffer, bmpparado);
-				break;
-			case Direcciones::Izquierda:
-				parado(buffer, bmpparadoizq);
-				break;
-			}
+		case Direcciones::Derecha:
+			parado(buffer, bmpparado);
+			break;
+		case Direcciones::Izquierda:
+			parado(buffer, bmpparadoizq);
+			break;
+		case Direcciones::Subir:
+			parado(buffer, bmpparado);
+			break;
+		case Direcciones::Bajar:
+			parado(buffer, bmpparado);
+			break;
+		}
 		break;
-		
+
 	case Direcciones::Ataque:
 		//indicex = 3;
 		ancho = 90;
@@ -117,11 +123,39 @@ void Heroe::mover(BufferedGraphics^ buffer, Bitmap^ bmpizquierda, Bitmap^ bmpder
 		indicex++;
 		if (indicex > 4)
 			indicex = 0;
+		break;
 
+	case Direcciones::Subir:
+		imprimir(buffer, bmpderecha);
+		indicex++;
+		if (indicex > 5)
+			indicex = 0;
+
+		if (y >= 390) {
+			dx = 0;
+			dy = -20;
+			y += dy;
+			ultimatecla = Subir;
+		}
+		break;
+
+	case Direcciones::Bajar:
+		imprimir(buffer, bmpderecha);
+		indicex++;
+
+		if (indicex > 5)
+			indicex = 0;
+		if (y <= 430 ) {
+			dx = 0;
+			dy = 20;
+			y += dy;
+			ultimatecla = Bajar;
+		}
+		break;
 	}
 }
 
-void Heroe::parado(BufferedGraphics ^ buffer, Bitmap ^ bmp) {
+void Heroe::parado(BufferedGraphics^ buffer, Bitmap^ bmp) {
 	ancho = 50;
 	indicex++;
 	if (indicex > 4)
