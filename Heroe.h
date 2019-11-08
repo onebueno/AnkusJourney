@@ -1,7 +1,7 @@
 #pragma once
 using namespace System::Drawing;
 
-enum Direcciones {Ninguna, Izquierda, Derecha};
+enum Direcciones {Ninguna, Izquierda, Derecha,Ataque};
 
 class Heroe {
 private:
@@ -19,12 +19,13 @@ public:
 	Heroe();
 	~Heroe();
 	Heroe(int x, int y);
-	Direcciones direccion;
 	void imprimir(BufferedGraphics^buffer, Bitmap^bmp);
-	void mover(BufferedGraphics^buffer, Bitmap^ bmpizquierda, Bitmap^ bmpderecha, Bitmap^ bmpparado, Bitmap^ bmpparadoizq, Graphics^ g);
+	void mover(BufferedGraphics^buffer, Bitmap^ bmpizquierda, Bitmap^ bmpderecha, Bitmap^ bmpparado, Bitmap^ bmpparadoizq,Bitmap^ ataque, Graphics^ g);
 	void parado(BufferedGraphics^ buffer, Bitmap^ bmp);
 	int getx();
 	int gety();
+	Rectangle GetHeroe();
+	Direcciones direccion;
 };
 
 Heroe::Heroe() {}
@@ -55,12 +56,13 @@ int Heroe::gety() {
 
 void Heroe::imprimir(BufferedGraphics^ buffer, Bitmap^ bmp) {
 	Rectangle porcion = Rectangle(indicex * ancho, indicey * alto, ancho, alto);
-	Rectangle aumento = Rectangle(x, y, ancho * 2, alto * 2);
+	Rectangle aumento = Rectangle(x, y, ancho * 2, alto * 2 );
 	buffer->Graphics->DrawImage(bmp, aumento, porcion, GraphicsUnit::Pixel);
 }
 
-void Heroe::mover(BufferedGraphics^ buffer, Bitmap^ bmpizquierda, Bitmap^ bmpderecha, Bitmap^ bmpparado, Bitmap^ bmpparadoizq,Graphics^g) {
+void Heroe::mover(BufferedGraphics^ buffer, Bitmap^ bmpizquierda, Bitmap^ bmpderecha, Bitmap^ bmpparado, Bitmap^ bmpparadoizq,Bitmap^ ataque,Graphics^g) {
 	ancho = 79;
+	ataque->MakeTransparent(ataque->GetPixel(0, 0));
 	switch (direccion) {
 	case Direcciones::Derecha:
 
@@ -90,25 +92,33 @@ void Heroe::mover(BufferedGraphics^ buffer, Bitmap^ bmpizquierda, Bitmap^ bmpder
 			dy = 0;
 			x += dx;
 		}
-		
 		ultimatecla = Izquierda;
-
 		break;
 
 	case Direcciones::Ninguna:
 		dx = 0;
 		dy = 0;
 		switch (ultimatecla) {
-		case Direcciones::Derecha:
-			parado(buffer, bmpparado);
-			break;
-		case Direcciones::Izquierda:
+			case Direcciones::Derecha:
+				parado(buffer, bmpparado);
+				break;
+			case Direcciones::Izquierda:
+				parado(buffer, bmpparadoizq);
+				break;
+			}
+		break;
+		
+	case Direcciones::Ataque:
+		//indicex = 3;
+		ancho = 90;
+		dx = 0;
+		dy = 0;
+		imprimir(buffer, ataque);
+		indicex++;
+		if (indicex > 4)
+			indicex = 0;
 
-			parado(buffer, bmpparadoizq);
-			break;
-		}
 	}
-
 }
 
 void Heroe::parado(BufferedGraphics ^ buffer, Bitmap ^ bmp) {
@@ -117,5 +127,8 @@ void Heroe::parado(BufferedGraphics ^ buffer, Bitmap ^ bmp) {
 	if (indicex > 4)
 		indicex = 0;
 	imprimir(buffer, bmp);
+}
 
+Rectangle Heroe::GetHeroe() {
+	return Rectangle(x, y, ancho * 2, alto * 2);
 }
