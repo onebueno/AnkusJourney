@@ -1,6 +1,8 @@
 #pragma once
 #include "Heroe.h"
 #include "Alfa.h"
+#include "Fondo.h"
+#include "ArregloBalas.h"
 
 namespace AJ {
 
@@ -11,7 +13,7 @@ namespace AJ {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace System::Media;
-
+	
 	/// <summary>
 	/// Resumen de AnkusJourney
 	/// </summary>
@@ -19,6 +21,7 @@ namespace AJ {
 	{
 	private:
 		Heroe* objheroe;
+		fondo* tren;
 		Alfa* objAlfa;
 		Bitmap^ bmpparado;
 		Bitmap^ bmpderecha;
@@ -30,16 +33,21 @@ namespace AJ {
 		Bitmap^ criminal2;
 		Bitmap^ trashcan;
 		Bitmap^ ataque;
+		Bitmap^ train;
+		Bitmap^ hacha;
 		Graphics ^g;
 		BufferedGraphicsContext^ espacio;
 		BufferedGraphics^ buffer;
+		ArregloBalas *arreglo;
+		
 		int nivel;
 	public:
 		AnkusJourney(void)
 		{
 			//TODO: agregar código de constructor aquí
 			InitializeComponent();
-			objheroe = new Heroe(50, 400);
+			objheroe = new Heroe(50, 420);
+			tren = new fondo(0,0);
 			objAlfa = new Alfa(800, 500);
 			bmpparado = gcnew Bitmap("parado.png");
 			bmpderecha = gcnew Bitmap("movederecha.png");
@@ -51,10 +59,10 @@ namespace AJ {
 			criminal2 = gcnew Bitmap("criminal2.png");
 			trashcan = gcnew Bitmap("trashcanleft.png");
 			ataque = gcnew Bitmap("atacar.png");
-			//g = this->CreateGraphics();
-			//espacio = BufferedGraphicsManager::Current;
-			//buffer = espacio->Allocate(g, this->ClientRectangle);
-			nivel = 1;
+			train = gcnew Bitmap("tren.png");
+			arreglo = new ArregloBalas();
+			hacha = gcnew Bitmap("hacha.png");
+			nivel = 2;
 		}
 
 	protected:
@@ -121,23 +129,25 @@ namespace AJ {
 			objAlfa->Mover(buffer, trashcan);
 		}
 		if (nivel == 2) {
-			buffer->Graphics->DrawImage(criminal, -45, -85, criminal->Width, criminal->Height);
+			tren->mover(buffer, train);
+			//buffer->Graphics->DrawImage(criminal, -45, -85, criminal->Width, criminal->Height);
 		}
 		if (nivel == 3) {
 			buffer->Graphics->DrawImage(corrupcion, 0, 0, corrupcion->Width*0.60, corrupcion->Height*0.50);
 		}
 		objheroe->mover(buffer, bmpizquierda, bmpderecha, bmpparado, bmpparadoizq, ataque, g);
 		buffer->Render(g);
+		arreglo->moverbalas(buffer, hacha);
 
 		delete buffer;
 		delete espacio;
 		delete g;
 	}
 	private: System::Void soltartecla(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
-		if (e->KeyCode == Keys::P)
+		/*if (e->KeyCode == Keys::P)
 		{
 			objheroe->direccion = Direcciones::Ataque;
-		}
+		}*/
 		objheroe->direccion = Direcciones::Ninguna;
 	}
 	private: System::Void presionartecla(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
@@ -150,9 +160,10 @@ namespace AJ {
 			break;
 		case Keys::P:
 			objheroe->direccion = Direcciones::Ataque;
+			arreglo->agregarbala(objheroe);
+			break;
 
 		}
 	}
 	};
 }
-
