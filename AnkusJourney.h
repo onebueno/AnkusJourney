@@ -13,7 +13,7 @@ namespace AJ {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace System::Media;
-	
+
 	/// <summary>
 	/// Resumen de AnkusJourney
 	/// </summary>
@@ -35,11 +35,11 @@ namespace AJ {
 		Bitmap^ ataque;
 		Bitmap^ train;
 		Bitmap^ hacha;
-		Graphics ^g;
+		Graphics^ g;
 		BufferedGraphicsContext^ espacio;
 		BufferedGraphics^ buffer;
-		ArregloBalas *arreglo;
-		
+		ArregloBalas* arreglo;
+
 		int nivel;
 	public:
 		AnkusJourney(void)
@@ -47,7 +47,7 @@ namespace AJ {
 			//TODO: agregar código de constructor aquí
 			InitializeComponent();
 			objheroe = new Heroe(50, 420);
-			tren = new fondo(0,0);
+			tren = new fondo(0, 0);
 			objAlfa = new Alfa(800, 500);
 			bmpparado = gcnew Bitmap("parado.png");
 			bmpderecha = gcnew Bitmap("movederecha.png");
@@ -76,9 +76,9 @@ namespace AJ {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::Timer^  timer1;
+	private: System::Windows::Forms::Timer^ timer1;
 
-	private: System::ComponentModel::IContainer^  components;
+	private: System::ComponentModel::IContainer^ components;
 
 	private:
 		/// <summary>
@@ -115,7 +115,7 @@ namespace AJ {
 
 		}
 #pragma endregion
-	private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
+	private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
 
 		//Graphics ^
 		g = this->CreateGraphics();
@@ -125,7 +125,7 @@ namespace AJ {
 		buffer = espacio->Allocate(g, this->ClientRectangle);
 		buffer->Graphics->Clear(Color::White);
 		if (nivel == 1) {
-			buffer->Graphics->DrawImage(contaminacion, 0, -50, contaminacion->Width*1.55, contaminacion->Height*1.3);
+			buffer->Graphics->DrawImage(contaminacion, 0, -50, contaminacion->Width * 1.55, contaminacion->Height * 1.3);
 			objAlfa->Mover(buffer, trashcan);
 		}
 		if (nivel == 2) {
@@ -133,25 +133,24 @@ namespace AJ {
 			//buffer->Graphics->DrawImage(criminal, -45, -85, criminal->Width, criminal->Height);
 		}
 		if (nivel == 3) {
-			buffer->Graphics->DrawImage(corrupcion, 0, 0, corrupcion->Width*0.60, corrupcion->Height*0.50);
+			buffer->Graphics->DrawImage(corrupcion, 0, 0, corrupcion->Width * 0.60, corrupcion->Height * 0.50);
 		}
 		objheroe->mover(buffer, bmpizquierda, bmpderecha, bmpparado, bmpparadoizq, ataque, g);
-		arreglo->moverbalas(buffer, hacha, objheroe);
+		arreglo->moverbalas(buffer, hacha);
 		buffer->Render(g);
-		
 
 		delete buffer;
 		delete espacio;
 		delete g;
 	}
-	private: System::Void soltartecla(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
+	private: System::Void soltartecla(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
 		/*if (e->KeyCode == Keys::P)
 		{
 			objheroe->direccion = Direcciones::Ataque;
 		}*/
 		objheroe->direccion = Direcciones::Ninguna;
 	}
-	private: System::Void presionartecla(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
+	private: System::Void presionartecla(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
 		switch (e->KeyCode) {
 		case Keys::A:
 			objheroe->direccion = Direcciones::Izquierda;
@@ -163,7 +162,12 @@ namespace AJ {
 			objheroe->direccion = Direcciones::Ataque;
 			arreglo->agregarbala(objheroe);
 			break;
-
+		case Keys::W:
+			objheroe->direccion = Direcciones::Subir;
+			break;
+		case Keys::S:
+			objheroe->direccion = Direcciones::Bajar;
+			break;
 		}
 	}
 	};
