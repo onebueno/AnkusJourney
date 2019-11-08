@@ -136,8 +136,9 @@ namespace AJ {
 			buffer->Graphics->DrawImage(corrupcion, 0, 0, corrupcion->Width*0.60, corrupcion->Height*0.50);
 		}
 		objheroe->mover(buffer, bmpizquierda, bmpderecha, bmpparado, bmpparadoizq, ataque, g);
+		arreglo->moverbalas(buffer, hacha, objheroe);
 		buffer->Render(g);
-		arreglo->moverbalas(buffer, hacha);
+		
 
 		delete buffer;
 		delete espacio;
