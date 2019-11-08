@@ -11,6 +11,7 @@ public:
 	Bala(int px, int py) {
 		x = px;
 		y = py;
+		dx = 30;
 		ancho = 86 / 4;
 		alto = 18;
 		indicex = 0;
@@ -26,7 +27,7 @@ public:
 		x += dx;
 	}
 
-	void Mover(BufferedGraphics^ buffer, Bitmap^ bmp) {
+	void Mover(BufferedGraphics^ buffer, Bitmap^ bmp,Heroe * heroe) {
 		if (indicex < 3)
 			indicex++;
 		else
