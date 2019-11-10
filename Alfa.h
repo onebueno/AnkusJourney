@@ -8,6 +8,9 @@ public:
 	~Alfa();
 	void Dibujar(BufferedGraphics^ buffer, Bitmap^ bmp);
 	void Mover(BufferedGraphics^ buffer, Bitmap^ izq);
+	Rectangle getalfa();
+	void setvisible(bool v);
+	bool getvisible();
 };
 
 Alfa::Alfa(int px, int py)
@@ -20,6 +23,7 @@ Alfa::Alfa(int px, int py)
 	indicey = 0;
 	ancho = 349/16;
 	alto = 18;
+	visible = true;
 }
 
 Alfa::~Alfa()
@@ -41,3 +45,9 @@ void Alfa::Mover(BufferedGraphics^ buffer, Bitmap^ izq) {
 		indicex = 0;
 	Dibujar(buffer, izq);
 }
+
+Rectangle Alfa::getalfa(){ return Rectangle(x, y, ancho*2.5, alto*2.5); }
+
+void Alfa::setvisible(bool v) { visible = v; }
+
+bool Alfa::getvisible() { return visible; }
