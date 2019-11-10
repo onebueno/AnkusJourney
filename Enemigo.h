@@ -9,6 +9,7 @@ protected:
 	double alto, ancho;
 	int dx, dy;
 	int indicex, indicey;
+	bool visible;
 public:
 	Enemigo() {}
 	~Enemigo() {}
