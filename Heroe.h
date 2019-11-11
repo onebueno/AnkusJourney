@@ -1,7 +1,7 @@
 #pragma once
 using namespace System::Drawing;
 
-enum Direcciones { Ninguna, Izquierda, Derecha, Ataque, Subir, Bajar};
+enum Direcciones { Ninguna, Izquierda, Derecha, Ataque, Subir, Bajar };
 
 class Heroe {
 private:
@@ -72,7 +72,7 @@ void Heroe::mover(BufferedGraphics^ buffer, Bitmap^ bmpizquierda, Bitmap^ bmpder
 		if (indicex > 5)
 			indicex = 0;
 		if (x + ancho * 2 < g->VisibleClipBounds.Width) {
-			dx = 50;
+			dx = 30;
 			dy = 0;
 			x += dx;
 		}
@@ -88,7 +88,7 @@ void Heroe::mover(BufferedGraphics^ buffer, Bitmap^ bmpizquierda, Bitmap^ bmpder
 			indicex = 0;
 		if (x > 0)
 		{
-			dx = -50;
+			dx = -30;
 			dy = 0;
 			x += dx;
 		}
@@ -115,7 +115,6 @@ void Heroe::mover(BufferedGraphics^ buffer, Bitmap^ bmpizquierda, Bitmap^ bmpder
 		break;
 
 	case Direcciones::Ataque:
-		//indicex = 3;
 		ancho = 90;
 		dx = 0;
 		dy = 0;
@@ -145,7 +144,7 @@ void Heroe::mover(BufferedGraphics^ buffer, Bitmap^ bmpizquierda, Bitmap^ bmpder
 
 		if (indicex > 5)
 			indicex = 0;
-		if (y <= 430 ) {
+		if (y <= 430) {
 			dx = 0;
 			dy = 20;
 			y += dy;
