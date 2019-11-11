@@ -18,21 +18,21 @@ public:
 	}
 	~CControladora() {}
 
-	void agregarbala(Heroe * heroe) {
-		Bala *aux = new Bala(heroe->getx()+90, heroe->gety()+30);
+	void agregarbala(Heroe* heroe) {
+		Bala* aux = new Bala(heroe->getx() + 90, heroe->gety() + 30);
 		arr_balas.push_back(aux);
 	}
 
-	void movertodo(BufferedGraphics^ buffer,Bitmap ^bmp,Bitmap ^izq) {
+	void movertodo(BufferedGraphics^ buffer, Bitmap^ bmp, Bitmap^ izq, Bitmap^ der) {
 		for (int i = 0; i < arr_balas.size(); i++)
 			arr_balas.at(i)->Mover(buffer, bmp);
 		for (int j = 0; j < arr_alfa.size(); j++)
-			arr_alfa.at(j)->Mover(buffer, izq);
+			arr_alfa.at(j)->Mover(buffer, izq, der);
 	}
 
 	void agregaralfa() {
 		for (int i = 0; i < num_a; i++) {
-			Alfa *aux = new Alfa(300+rand() % 600, 390 + rand() % 40);
+			Alfa* aux = new Alfa(300 + rand() % 600, 390 + rand() % 40);
 			arr_alfa.push_back(aux);
 		}
 	}
