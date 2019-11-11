@@ -39,6 +39,7 @@ namespace AJ {
 		BufferedGraphicsContext^ espacio;
 		BufferedGraphics^ buffer;
 		CControladora* arreglo;
+		Bitmap^ der;
 
 		int nivel;
 	public:
@@ -46,7 +47,7 @@ namespace AJ {
 		{
 			//TODO: agregar código de constructor aquí
 			InitializeComponent();
-			
+
 			objheroe = new Heroe(50, 420);
 			tren = new fondo(0, 0);
 			//objAlfa = new Alfa(800, 500);
@@ -64,6 +65,7 @@ namespace AJ {
 			arreglo = new CControladora();
 			hacha = gcnew Bitmap("hacha.png");
 			nivel = 1;
+			der = gcnew Bitmap("trashcanright.png");
 
 			arreglo->agregaralfa();
 		}
@@ -127,7 +129,7 @@ namespace AJ {
 		if (nivel == 1) {
 			buffer->Graphics->DrawImage(contaminacion, 0, -50, contaminacion->Width * 1.55, contaminacion->Height * 1.3);
 			//objAlfa->Mover(buffer, trashcan);
-			arreglo->movertodo(buffer, hacha, trashcan);
+			arreglo->movertodo(buffer, hacha, trashcan, der);
 		}
 		if (nivel == 2) {
 			tren->mover(buffer, train);
