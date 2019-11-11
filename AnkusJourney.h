@@ -1,8 +1,8 @@
 #pragma once
 #include "Heroe.h"
-#include "Alfa.h"
 #include "Fondo.h"
-#include "ArregloBalas.h"
+#include "Controladora.h"
+#include <ctime>
 
 namespace AJ {
 
@@ -22,7 +22,7 @@ namespace AJ {
 	private:
 		Heroe* objheroe;
 		fondo* tren;
-		Alfa* objAlfa;
+		//Alfa* objAlfa;
 		Bitmap^ bmpparado;
 		Bitmap^ bmpderecha;
 		Bitmap^ bmpizquierda;
@@ -38,7 +38,7 @@ namespace AJ {
 		Graphics^ g;
 		BufferedGraphicsContext^ espacio;
 		BufferedGraphics^ buffer;
-		ArregloBalas* arreglo;
+		CControladora* arreglo;
 
 		int nivel;
 	public:
@@ -46,9 +46,10 @@ namespace AJ {
 		{
 			//TODO: agregar código de constructor aquí
 			InitializeComponent();
+			
 			objheroe = new Heroe(50, 420);
 			tren = new fondo(0, 0);
-			objAlfa = new Alfa(800, 500);
+			//objAlfa = new Alfa(800, 500);
 			bmpparado = gcnew Bitmap("parado.png");
 			bmpderecha = gcnew Bitmap("movederecha.png");
 			bmpizquierda = gcnew Bitmap("moveizquierda.png");
@@ -60,9 +61,11 @@ namespace AJ {
 			trashcan = gcnew Bitmap("trashcanleft.png");
 			ataque = gcnew Bitmap("atacar.png");
 			train = gcnew Bitmap("tren.png");
-			arreglo = new ArregloBalas();
+			arreglo = new CControladora();
 			hacha = gcnew Bitmap("hacha.png");
-			nivel = 2;
+			nivel = 1;
+
+			arreglo->agregaralfa();
 		}
 
 	protected:
@@ -117,26 +120,23 @@ namespace AJ {
 #pragma endregion
 	private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
 
-		//Graphics ^
 		g = this->CreateGraphics();
-		//BufferedGraphicsContext^ 
 		espacio = BufferedGraphicsManager::Current;
-		//BufferedGraphics^ 
 		buffer = espacio->Allocate(g, this->ClientRectangle);
 		buffer->Graphics->Clear(Color::White);
 		if (nivel == 1) {
 			buffer->Graphics->DrawImage(contaminacion, 0, -50, contaminacion->Width * 1.55, contaminacion->Height * 1.3);
-			objAlfa->Mover(buffer, trashcan);
+			//objAlfa->Mover(buffer, trashcan);
+			arreglo->movertodo(buffer, hacha, trashcan);
 		}
 		if (nivel == 2) {
 			tren->mover(buffer, train);
-			//buffer->Graphics->DrawImage(criminal, -45, -85, criminal->Width, criminal->Height);
 		}
 		if (nivel == 3) {
 			buffer->Graphics->DrawImage(corrupcion, 0, 0, corrupcion->Width * 0.60, corrupcion->Height * 0.50);
 		}
+		arreglo->colision(g);
 		objheroe->mover(buffer, bmpizquierda, bmpderecha, bmpparado, bmpparadoizq, ataque, g);
-		arreglo->moverbalas(buffer, hacha);
 		buffer->Render(g);
 
 		delete buffer;
@@ -144,10 +144,6 @@ namespace AJ {
 		delete g;
 	}
 	private: System::Void soltartecla(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
-		/*if (e->KeyCode == Keys::P)
-		{
-			objheroe->direccion = Direcciones::Ataque;
-		}*/
 		objheroe->direccion = Direcciones::Ninguna;
 	}
 	private: System::Void presionartecla(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {

@@ -7,27 +7,29 @@ private:
 	int dx;
 	double ancho, alto;
 	int indicex, indicey;
+	bool visible;
 public:
 	Bala(int px, int py) {
 		x = px;
 		y = py;
-		dx = 30;
+		dx = 45;
 		ancho = 86 / 4;
 		alto = 18;
 		indicex = 0;
 		indicey = 0;
+		visible = true;
 	}
-	~Bala(){}
-	
+	~Bala() {}
+
 	void Dibujar(BufferedGraphics^ buffer, Bitmap^ bmp) {
 		bmp->MakeTransparent(bmp->GetPixel(0, 0));
 		Rectangle porcion = Rectangle(ancho*indicex, indicey*alto, ancho, alto);
-		Rectangle aumento = Rectangle(x, y, ancho*2, alto*2);
+		Rectangle aumento = Rectangle(x, y, ancho * 2, alto * 2);
 		buffer->Graphics->DrawImage(bmp, aumento, porcion, GraphicsUnit::Pixel);
 		x += dx;
 	}
 
-	void Mover(BufferedGraphics^ buffer, Bitmap^ bmp,Heroe * heroe) {
+	void Mover(BufferedGraphics^ buffer, Bitmap^ bmp) {
 		if (indicex < 3)
 			indicex++;
 		else
@@ -38,4 +40,11 @@ public:
 	Rectangle getBala() {
 		return Rectangle(x, y, ancho, alto);
 	}
+
+	void setvisible(bool v) { visible = v; }
+
+	bool getvisible() { return visible; }
+
+	int getX() { return x; }
+	int gety() { return y; }
 };
