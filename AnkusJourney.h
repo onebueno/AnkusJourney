@@ -2,6 +2,7 @@
 #include "Heroe.h"
 #include "Fondo.h"
 #include "Controladora.h"
+#include "Controladora2.h"
 #include <ctime>
 
 namespace AJ {
@@ -22,50 +23,60 @@ namespace AJ {
 	private:
 		Heroe* objheroe;
 		fondo* tren;
-		//Alfa* objAlfa;
 		Bitmap^ bmpparado;
 		Bitmap^ bmpderecha;
 		Bitmap^ bmpizquierda;
 		Bitmap^ bmpparadoizq;
 		Bitmap^ corrupcion;
 		Bitmap^ contaminacion;
-		Bitmap^ criminal;
-		Bitmap^ criminal2;
 		Bitmap^ trashcan;
 		Bitmap^ ataque;
 		Bitmap^ train;
 		Bitmap^ hacha;
+		Bitmap^ suelo;
 		Graphics^ g;
 		BufferedGraphicsContext^ espacio;
 		BufferedGraphics^ buffer;
 		CControladora* arreglo;
-
+		Bitmap^ der;
+		Bitmap^ humo;
+		Bitmap^ reciclaje;
+		Bitmap^ fuego;
+		Bitmap^ dinero;
+		Bitmap^ ojo;
+		CControladora2* arreglo2;
+		int vidas;
 		int nivel;
 	public:
 		AnkusJourney(void)
 		{
 			//TODO: agregar código de constructor aquí
 			InitializeComponent();
-			
+
 			objheroe = new Heroe(50, 420);
 			tren = new fondo(0, 0);
-			//objAlfa = new Alfa(800, 500);
 			bmpparado = gcnew Bitmap("parado.png");
 			bmpderecha = gcnew Bitmap("movederecha.png");
 			bmpizquierda = gcnew Bitmap("moveizquierda.png");
 			bmpparadoizq = gcnew Bitmap("paradoizquierda.png");
 			corrupcion = gcnew Bitmap("corrupted.jpg");
 			contaminacion = gcnew Bitmap("pollution.png");
-			criminal = gcnew Bitmap("criminal.png");
-			criminal2 = gcnew Bitmap("criminal2.png");
 			trashcan = gcnew Bitmap("trashcanleft.png");
 			ataque = gcnew Bitmap("atacar.png");
 			train = gcnew Bitmap("tren.png");
 			arreglo = new CControladora();
 			hacha = gcnew Bitmap("hacha.png");
+			suelo = gcnew Bitmap("road.png");
+			der = gcnew Bitmap("trashcanright.png");
+			humo = gcnew Bitmap("humo.png");
+			reciclaje = gcnew Bitmap("recycling.png");
+			fuego = gcnew Bitmap("fuego.png");
+			dinero = gcnew Bitmap("dinero.png");
+			ojo = gcnew Bitmap("eye.png");
+			arreglo2 = new CControladora2();
 			nivel = 1;
-
-			arreglo->agregaralfa();
+			arreglo->agregarenemigo();
+			arreglo2->agregarenemigo();
 		}
 
 	protected:
@@ -107,9 +118,10 @@ namespace AJ {
 			// 
 			// AnkusJourney
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1079, 551);
+			this->ClientSize = System::Drawing::Size(1439, 678);
+			this->Margin = System::Windows::Forms::Padding(4);
 			this->Name = L"AnkusJourney";
 			this->Text = L"AnkusJourney";
 			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &AnkusJourney::presionartecla);
@@ -125,17 +137,28 @@ namespace AJ {
 		buffer = espacio->Allocate(g, this->ClientRectangle);
 		buffer->Graphics->Clear(Color::White);
 		if (nivel == 1) {
+			
 			buffer->Graphics->DrawImage(contaminacion, 0, -50, contaminacion->Width * 1.55, contaminacion->Height * 1.3);
-			//objAlfa->Mover(buffer, trashcan);
-			arreglo->movertodo(buffer, hacha, trashcan);
+			buffer->Graphics->DrawImage(suelo, 0, 440, suelo->Width * 0.8, suelo->Height* 0.8);
+			arreglo->movertodo(buffer, hacha, trashcan, der, humo,fuego);
+			arreglo->colision(g);
+			if (arreglo->GetAlfasize() == 0 && arreglo->GetBetasize() == 0 && arreglo->GetGammasize() == 0)
+				nivel++;
 		}
 		if (nivel == 2) {
-			tren->mover(buffer, train);
+			buffer->Graphics->DrawImage(corrupcion, 0, 0, corrupcion->Width * 0.60, corrupcion->Height * 0.50);
+
+			arreglo2->movertodo(buffer, hacha, dinero, ojo);
+			arreglo2->colision(g);
+			if (arreglo2->GetBetasize() == 0 && arreglo2->GetGammasize() == 0)
+				nivel++;
 		}
 		if (nivel == 3) {
-			buffer->Graphics->DrawImage(corrupcion, 0, 0, corrupcion->Width * 0.60, corrupcion->Height * 0.50);
+			tren->mover(buffer, train);
+			//arreglo->movertodo(buffer, hacha, trashcan, der,humo);
 		}
-		arreglo->colision(g);
+		
+		//arreglo->colision(g);
 		objheroe->mover(buffer, bmpizquierda, bmpderecha, bmpparado, bmpparadoizq, ataque, g);
 		buffer->Render(g);
 
@@ -157,6 +180,7 @@ namespace AJ {
 		case Keys::P:
 			objheroe->direccion = Direcciones::Ataque;
 			arreglo->agregarbala(objheroe);
+			arreglo2->agregarbala(objheroe);
 			break;
 		case Keys::W:
 			objheroe->direccion = Direcciones::Subir;
