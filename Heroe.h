@@ -13,7 +13,6 @@ private:
 	int alto;
 	int indicex;
 	int indicey;
-	Direcciones ultimatecla;
 	bool flag;
 public:
 	Heroe();
@@ -26,6 +25,7 @@ public:
 	int gety();
 	Rectangle GetHeroe();
 	Direcciones direccion;
+	Direcciones ultimatecla;
 };
 
 Heroe::Heroe() {}
@@ -130,7 +130,7 @@ void Heroe::mover(BufferedGraphics^ buffer, Bitmap^ bmpizquierda, Bitmap^ bmpder
 		if (indicex > 5)
 			indicex = 0;
 
-		if (y >= 390) {
+		if (y >= 370) {
 			dx = 0;
 			dy = -20;
 			y += dy;
