@@ -39,8 +39,16 @@ public:
 			arr_alfa.at(j)->Mover(buffer, izq, der);
 		for (int k = 0; k < arr_beta.size(); k++)
 			arr_beta.at(k)->Mover(buffer, fuego);
-		for (int m = 0; m < arr_gamma.size(); m++)
-			arr_gamma.at(m)->Mover(buffer, humo);
+	}
+
+	void invisiblegamma() {
+		for (int i = 0; i < arr_gamma.size(); i++)
+			arr_gamma.at(i)->Mover();
+	}
+
+	void movergamma(BufferedGraphics^buffer, Bitmap^ humo) {
+		for (int i = 0; i < arr_gamma.size(); i++)
+			arr_gamma.at(i)->Animar(buffer,humo);
 	}
 
 	void agregarenemigo() {
