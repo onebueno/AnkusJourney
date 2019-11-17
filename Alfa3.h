@@ -30,13 +30,13 @@ Alfa3::~Alfa3()
 {
 }
 
-void Alfa3::Dibujar(BufferedGraphics^ buffer, Bitmap^ bmp, Bitmap^ der) {
-	bmp->MakeTransparent(bmp->GetPixel(0, 0));
+void Alfa3::Dibujar(BufferedGraphics^ buffer, Bitmap^ izq, Bitmap^ der) {
+	izq->MakeTransparent(izq->GetPixel(0, 0));
 	der->MakeTransparent(der->GetPixel(0, 0));
 	if (dx < 0) {
 		Rectangle porcion = Rectangle(ancho * indicex, indicey * alto, ancho, alto);
 		Rectangle aumento = Rectangle(x, y, ancho * 2.5, alto * 2.5);
-		buffer->Graphics->DrawImage(bmp, aumento, porcion, GraphicsUnit::Pixel);
+		buffer->Graphics->DrawImage(izq, aumento, porcion, GraphicsUnit::Pixel);
 	}
 
 	if (x + dx < 0 || x + dx + ancho >= 1079) {
@@ -55,17 +55,17 @@ void Alfa3::Dibujar(BufferedGraphics^ buffer, Bitmap^ bmp, Bitmap^ der) {
 
 void Alfa3::Mover(BufferedGraphics^ buffer, Bitmap^ izq, Bitmap^ der) {
 	if (dx < 0) {
-		if (indicex >= 0 && indicex < 3)
+		if (indicex < 2)
 			indicex++;
 		else
 			indicex = 0;
 	}
 	if (dx > 0) {
-		indicex == 0;
-		if (indicex <= 0 && indicex > 3)
-			indicex++;
+		indicex == 2;
+		if (indicex <= 2 && indicex > 0)
+			indicex--;
 		else
-			indicex = 0;
+			indicex = 2;
 	}
 	Dibujar(buffer, izq, der);
 }
