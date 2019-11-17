@@ -1,6 +1,7 @@
 #pragma once
 #include "Heroe.h"
 #include "Bala.h"
+#include "Alfa2.h"
 #include "Beta2.h"
 #include "Gamma2.h"
 #include <vector>
@@ -11,16 +12,16 @@ using namespace std;
 class CControladora2 {
 private:
 	vector<Bala*>arr_balas;
-	
+	vector<Alfa2*>arr_alfa;
 	vector<Beta2*>arr_beta;
 	vector<Gamma2*>arr_gamma;
 	Heroe *obj;
-	//int num_a;
+	int num_a;
 	int num_b;
 	int num_g;
 public:
 	CControladora2() {
-		//num_a = 3 + rand() % 7;
+		num_a = 3 + rand() % 7;
 		num_b = 3 + rand() % 7;
 		num_g = 4 + rand() % 6;
 	}
@@ -31,23 +32,30 @@ public:
 		arr_balas.push_back(aux);
 	}
 
-	void movertodo(BufferedGraphics^ buffer, Bitmap^ bmp,// Bitmap^ izq, Bitmap^ der, 
-		Bitmap^ dinero, Bitmap^ ojo) {
+	void movertodo(BufferedGraphics^ buffer, Bitmap^ bmp,Bitmap^ izq, Bitmap^ der, Bitmap^ dinero) {
 		for (int i = 0; i < arr_balas.size(); i++)
 			arr_balas.at(i)->Mover(buffer, bmp);
-		//for (int j = 0; j < arr_alfa.size(); j++)
-			//arr_alfa.at(j)->Mover(buffer, izq, der);
+		for (int j = 0; j < arr_alfa.size(); j++)
+			arr_alfa.at(j)->Mover(buffer, izq, der);
 		for (int k = 0; k < arr_beta.size(); k++)
 			arr_beta.at(k)->Mover(buffer, dinero);
-		for (int m = 0; m < arr_gamma.size(); m++)
-			arr_gamma.at(m)->Mover(buffer, ojo);
+	}
+
+	void invisiblegamma() {
+		for (int i = 0; i < arr_gamma.size(); i++)
+			arr_gamma.at(i)->Mover();
+	}
+
+	void movergamma(BufferedGraphics^buffer, Bitmap^ humo) {
+		for (int i = 0; i < arr_gamma.size(); i++)
+			arr_gamma.at(i)->Animar(buffer, humo);
 	}
 
 	void agregarenemigo() {
-		/*for (int i = 0; i < num_a; i++) {
-			Alfa* aux = new Alfa(100 + rand() % 800, 400 + rand() % 30);
+		for (int i = 0; i < num_a; i++) {
+			Alfa2* aux = new Alfa2(100 + rand() % 800, 400 + rand() % 30);
 			arr_alfa.push_back(aux);
-		}*/
+		}
 
 		for (int j = 0; j < num_b; j++) {
 			Beta2* aux = new Beta2(100 + rand() % 800, 410 + rand() % 50);
@@ -60,9 +68,9 @@ public:
 		}
 	}
 
-	/*int GetAlfasize() {
+	int GetAlfasize() {
 		return arr_alfa.size();
-	}*/
+	}
 
 	int GetBetasize() {
 		return arr_beta.size();
@@ -73,14 +81,14 @@ public:
 	}
 
 	void colision(Graphics^ g) {
-		/*for (int i = 0; i < arr_balas.size(); i++) {
+		for (int i = 0; i < arr_balas.size(); i++) {
 			for (int j = 0; j < arr_alfa.size(); j++) {
-				if (arr_balas.at(i)->getBala().IntersectsWith(arr_alfa.at(j)->getalfa())) {
+				if (arr_balas.at(i)->getBala().IntersectsWith(arr_alfa.at(j)->getalfa2())) {
 					arr_balas.at(i)->setvisible(false);
 					arr_alfa.at(j)->setvisible(false);
 				}
 			}
-		}*/
+		}
 
 		for (int i = 0; i < arr_balas.size(); i++) {
 			for (int j = 0; j < arr_beta.size(); j++) {
@@ -116,13 +124,13 @@ public:
 			}
 		}
 
-		/*for (int i = 0; i < arr_alfa.size(); i++)
+		for (int i = 0; i < arr_alfa.size(); i++)
 		{
 			if (!arr_alfa.at(i)->getvisible())
 			{
 				arr_alfa.erase(arr_alfa.begin() + i);
 			}
-		}*/
+		}
 
 		for (int i = 0; i < arr_beta.size(); i++)
 		{
