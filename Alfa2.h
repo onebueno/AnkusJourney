@@ -15,9 +15,9 @@ private:
 public:
 	Alfa2(int px, int py);
 	~Alfa2();
-	void dibujar(BufferedGraphics^ buffer, Bitmap^ bmpizq, Bitmap^ bmpder);
-	void mover(BufferedGraphics^ buffer, Bitmap^ bpmizq, Bitmap^ bmpder);
-	Rectangle getAlfa2();
+	void Dibujar(BufferedGraphics^ buffer, Bitmap^ bmpizq, Bitmap^ bmpder);
+	void Mover(BufferedGraphics^ buffer, Bitmap^ bpmizq, Bitmap^ bmpder);
+	Rectangle getalfa2();
 	void setvisible(bool v);
 	bool getvisible();
 };
@@ -29,15 +29,15 @@ Alfa2::Alfa2(int px, int py) {
 	dy = 0;
 	indicex = 0;
 	indicey = 0;
-	ancho = 70;
+	ancho = 17.5;
 	alto = 30;
 	visible = true;
 }
 
 Alfa2::~Alfa2() {}
 
-void Alfa2::dibujar(BufferedGraphics^ buffer, Bitmap^ bmpizq, Bitmap^ bmpder) {
-	bmpizq->MakeTransparent(bmpizq->GetPixel(0,0));
+void Alfa2::Dibujar(BufferedGraphics^ buffer, Bitmap^ bmpizq, Bitmap^ bmpder) {
+	bmpizq->MakeTransparent(bmpizq->GetPixel(0, 0));
 	bmpder->MakeTransparent(bmpder->GetPixel(0, 0));
 
 	if (dx < 0) {
@@ -62,17 +62,24 @@ void Alfa2::dibujar(BufferedGraphics^ buffer, Bitmap^ bmpizq, Bitmap^ bmpder) {
 	x += dx;
 }
 
-void Alfa2::mover(BufferedGraphics^ buffer, Bitmap^ bmpizq, Bitmap^ bmpder) {
-	indicex++;
-
-	if (indicex < 3)
-		indicex = 0;
-	
-
-	dibujar(buffer, bmpizq, bmpder);
+void Alfa2::Mover(BufferedGraphics^ buffer, Bitmap^ bmpizq, Bitmap^ bmpder) {
+	if (dx < 0) {
+		if (indicex < 3)
+			indicex++;
+		else
+			indicex = 0;
+	}
+	if (dx > 0) {
+		indicex == 3;
+		if (indicex <= 3 && indicex > 0)
+			indicex--;
+		else
+			indicex = 3;
+	}
+	Dibujar(buffer, bmpizq, bmpder);
 }
 
-Rectangle Alfa2::getAlfa2() { return Rectangle(x, y, ancho * 2, alto * 2); }
+Rectangle Alfa2::getalfa2() { return Rectangle(x, y, ancho * 2, alto * 2); }
 
 void Alfa2::setvisible(bool v) { visible = v; }
 
