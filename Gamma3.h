@@ -5,11 +5,11 @@ public:
 	Gamma3(int px, int py);
 	~Gamma3();
 	void Dibujar(BufferedGraphics^ buffer, Bitmap^ bmp);
-	void Mover(BufferedGraphics^ buffer, Bitmap^ bmp);
+	void Mover();
+	void Animar(BufferedGraphics^ buffer, Bitmap^ bmp);
 	Rectangle getgamma3();
 	void setvisible(bool v);
 	bool getvisible();
-
 };
 
 Gamma3::Gamma3(int px, int py)
@@ -35,6 +35,10 @@ void Gamma3::Dibujar(BufferedGraphics^ buffer, Bitmap^ bmp) {
 	Rectangle aumento = Rectangle(x, y, ancho * 2, alto * 2);
 	buffer->Graphics->DrawImage(bmp, aumento, porcion, GraphicsUnit::Pixel);
 
+	Mover();
+}
+
+void Gamma3::Mover() {
 	if (x + dx < 0 || x + dx + ancho >= 1079) {
 		dx *= -1;
 	}
@@ -43,10 +47,9 @@ void Gamma3::Dibujar(BufferedGraphics^ buffer, Bitmap^ bmp) {
 	}
 	x += dx;
 	y += dy;
-
 }
 
-void Gamma3::Mover(BufferedGraphics^ buffer, Bitmap^ bmp) {
+void Gamma3::Animar(BufferedGraphics^ buffer, Bitmap^ bmp) {
 	if (indicex >= 0 && indicex < 2)
 		indicex++;
 	if (indicex == 2) {
