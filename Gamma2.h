@@ -5,7 +5,8 @@ public:
 	Gamma2(int px, int py);
 	~Gamma2();
 	void Dibujar(BufferedGraphics^ buffer, Bitmap^ bmp);
-	void Mover(BufferedGraphics^ buffer, Bitmap^ bmp);
+	void Mover();
+	void Animar(BufferedGraphics^ buffer, Bitmap^ bmp);
 	Rectangle getgamma2();
 	void setvisible(bool v);
 	bool getvisible();
@@ -34,7 +35,10 @@ void Gamma2::Dibujar(BufferedGraphics^ buffer, Bitmap^ bmp) {
 	Rectangle porcion = Rectangle(ancho * indicex, indicey * alto, ancho, alto);
 	Rectangle aumento = Rectangle(x, y, ancho * 0.7, alto * 0.7);
 	buffer->Graphics->DrawImage(bmp, aumento, porcion, GraphicsUnit::Pixel);
+	Mover();
+}
 
+void Gamma2::Mover() {
 	if (x + dx < 0 || x + dx + ancho >= 1079) {
 		dx *= -1;
 	}
@@ -46,7 +50,7 @@ void Gamma2::Dibujar(BufferedGraphics^ buffer, Bitmap^ bmp) {
 
 }
 
-void Gamma2::Mover(BufferedGraphics^ buffer, Bitmap^ bmp) {
+void Gamma2::Animar(BufferedGraphics^ buffer, Bitmap^ bmp) {
 	if (indicex >= 0 && indicex < 2)
 		indicex++;
 	if (indicex == 2) {
