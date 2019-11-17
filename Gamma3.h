@@ -1,19 +1,18 @@
 #pragma once
 #include "Enemigo.h"
-class Gamma2 : public Enemigo {
+class Gamma3 : public Enemigo {
 public:
-	Gamma2(int px, int py);
-	~Gamma2();
+	Gamma3(int px, int py);
+	~Gamma3();
 	void Dibujar(BufferedGraphics^ buffer, Bitmap^ bmp);
 	void Mover();
 	void Animar(BufferedGraphics^ buffer, Bitmap^ bmp);
-	Rectangle getgamma2();
+	Rectangle getgamma3();
 	void setvisible(bool v);
 	bool getvisible();
-
 };
 
-Gamma2::Gamma2(int px, int py)
+Gamma3::Gamma3(int px, int py)
 {
 	x = px;
 	y = py;
@@ -21,24 +20,25 @@ Gamma2::Gamma2(int px, int py)
 	dy = 10;
 	indicex = 0;
 	indicey = 0;
-	ancho = 72;
-	alto = 65;
+	ancho = 50;
+	alto = 39;
 	visible = true;
 }
 
-Gamma2::~Gamma2()
+Gamma3::~Gamma3()
 {
 }
 
-void Gamma2::Dibujar(BufferedGraphics^ buffer, Bitmap^ bmp) {
+void Gamma3::Dibujar(BufferedGraphics^ buffer, Bitmap^ bmp) {
 	bmp->MakeTransparent(bmp->GetPixel(0, 0));
 	Rectangle porcion = Rectangle(ancho * indicex, indicey * alto, ancho, alto);
-	Rectangle aumento = Rectangle(x, y, ancho * 0.7, alto * 0.7);
+	Rectangle aumento = Rectangle(x, y, ancho * 2, alto * 2);
 	buffer->Graphics->DrawImage(bmp, aumento, porcion, GraphicsUnit::Pixel);
+
 	Mover();
 }
 
-void Gamma2::Mover() {
+void Gamma3::Mover() {
 	if (x + dx < 0 || x + dx + ancho >= 1079) {
 		dx *= -1;
 	}
@@ -47,10 +47,9 @@ void Gamma2::Mover() {
 	}
 	x += dx;
 	y += dy;
-
 }
 
-void Gamma2::Animar(BufferedGraphics^ buffer, Bitmap^ bmp) {
+void Gamma3::Animar(BufferedGraphics^ buffer, Bitmap^ bmp) {
 	if (indicex >= 0 && indicex < 2)
 		indicex++;
 	if (indicex == 2) {
@@ -60,8 +59,8 @@ void Gamma2::Animar(BufferedGraphics^ buffer, Bitmap^ bmp) {
 	Dibujar(buffer, bmp);
 }
 
-Rectangle Gamma2::getgamma2() { return Rectangle(x, y, ancho * 0.7, alto * 0.7); }
+Rectangle Gamma3::getgamma3() { return Rectangle(x, y, ancho * 0.7, alto * 0.7); }
 
-void Gamma2::setvisible(bool v) { visible = v; }
+void Gamma3::setvisible(bool v) { visible = v; }
 
-bool Gamma2::getvisible() { return visible; }
+bool Gamma3::getvisible() { return visible; }

@@ -3,6 +3,7 @@
 #include "Fondo.h"
 #include "Controladora.h"
 #include "Controladora2.h"
+#include "Controladora3.h"
 #include <ctime>
 
 namespace AJ {
@@ -23,6 +24,7 @@ namespace AJ {
 	private:
 		Heroe* objheroe;
 		fondo* tren;
+		Bitmap^ bmpcoin;
 		Bitmap^ bmpparado;
 		Bitmap^ bmpderecha;
 		Bitmap^ bmpizquierda;
@@ -45,6 +47,11 @@ namespace AJ {
 		Bitmap^ dinero;
 		Bitmap^ ojo;
 		CControladora2* arreglo2;
+		CControladora3* arreglo3;
+		Bitmap^ ladronizq;
+		Bitmap^ ladronder;
+		Bitmap^ pandillero;
+		Bitmap^ terrorista;
 		int vidas;
 		int nivel;
 	public:
@@ -74,9 +81,16 @@ namespace AJ {
 			dinero = gcnew Bitmap("dinero.png");
 			ojo = gcnew Bitmap("eye.png");
 			arreglo2 = new CControladora2();
+			arreglo3 = new CControladora3();
+			bmpcoin = gcnew Bitmap("coin.png");
+			ladronizq = gcnew Bitmap("ladron.png");
+			ladronder = gcnew Bitmap("ladronder.png");
+			pandillero = gcnew Bitmap("pandillero.png");
+			terrorista = gcnew Bitmap("terrorista.png");
 			nivel = 1;
 			arreglo->agregarenemigo();
 			arreglo2->agregarenemigo();
+			arreglo3->agregarenemigo();
 		}
 
 	protected:
@@ -137,10 +151,10 @@ namespace AJ {
 		buffer = espacio->Allocate(g, this->ClientRectangle);
 		buffer->Graphics->Clear(Color::White);
 		if (nivel == 1) {
-			
+
 			buffer->Graphics->DrawImage(contaminacion, 0, -50, contaminacion->Width * 1.55, contaminacion->Height * 1.3);
-			buffer->Graphics->DrawImage(suelo, 0, 440, suelo->Width * 0.8, suelo->Height* 0.8);
-			arreglo->movertodo(buffer, hacha, trashcan, der, humo,fuego);
+			buffer->Graphics->DrawImage(suelo, 0, 440, suelo->Width * 0.8, suelo->Height * 0.8);
+			arreglo->movertodo(buffer, hacha, trashcan, der, humo, fuego);
 			arreglo->colision(g);
 			if (arreglo->GetAlfasize() == 0 && arreglo->GetBetasize() == 0 && arreglo->GetGammasize() == 0)
 				nivel++;
@@ -148,16 +162,18 @@ namespace AJ {
 		if (nivel == 2) {
 			buffer->Graphics->DrawImage(corrupcion, 0, 0, corrupcion->Width * 0.60, corrupcion->Height * 0.50);
 
-			arreglo2->movertodo(buffer, hacha, dinero, ojo);
+			arreglo2->movertodo(buffer, hacha,bmpcoin,bmpcoin, dinero, ojo);
 			arreglo2->colision(g);
 			if (arreglo2->GetBetasize() == 0 && arreglo2->GetGammasize() == 0)
 				nivel++;
 		}
 		if (nivel == 3) {
 			tren->mover(buffer, train);
-			//arreglo->movertodo(buffer, hacha, trashcan, der,humo);
+			
+			arreglo3->movertodo(buffer, hacha, ladronizq, ladronder, terrorista, pandillero);
+			arreglo3->colision(g);
 		}
-		
+
 		//arreglo->colision(g);
 		objheroe->mover(buffer, bmpizquierda, bmpderecha, bmpparado, bmpparadoizq, ataque, g);
 		buffer->Render(g);
@@ -181,6 +197,7 @@ namespace AJ {
 			objheroe->direccion = Direcciones::Ataque;
 			arreglo->agregarbala(objheroe);
 			arreglo2->agregarbala(objheroe);
+			arreglo3->agregarbala(objheroe);
 			break;
 		case Keys::W:
 			objheroe->direccion = Direcciones::Subir;
