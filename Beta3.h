@@ -9,7 +9,6 @@ public:
 	Rectangle getbeta3();
 	void setvisible(bool v);
 	bool getvisible();
-
 };
 
 Beta3::Beta3(int px, int py)
@@ -39,7 +38,6 @@ void Beta3::Dibujar(BufferedGraphics^ buffer, Bitmap^ bmp) {
 		dy *= -1;
 	}
 	y += dy;
-
 }
 
 void Beta3::Mover(BufferedGraphics^ buffer, Bitmap^ bmp) {
