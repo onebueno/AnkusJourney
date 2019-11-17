@@ -1,18 +1,18 @@
 #pragma once
 #include "Enemigo.h"
-class Beta2 : public Enemigo {
+class Beta : public Enemigo {
 public:
-	Beta2(int px, int py);
-	~Beta2();
+	Beta(int px, int py);
+	~Beta();
 	void Dibujar(BufferedGraphics^ buffer, Bitmap^ bmp);
 	void Mover(BufferedGraphics^ buffer, Bitmap^ bmp);
-	Rectangle getbeta2();
+	Rectangle getbeta();
 	void setvisible(bool v);
 	bool getvisible();
 
 };
 
-Beta2::Beta2(int px, int py)
+Beta::Beta(int px, int py)
 {
 	x = px;
 	y = py;
@@ -20,16 +20,16 @@ Beta2::Beta2(int px, int py)
 	dy = 10;
 	indicex = 0;
 	indicey = 0;
-	ancho = 23;
-	alto = 26;
+	ancho = 139/6;
+	alto = 29;
 	visible = true;
 }
 
-Beta2::~Beta2()
+Beta::~Beta()
 {
 }
 
-void Beta2::Dibujar(BufferedGraphics^ buffer, Bitmap^ bmp) {
+void Beta::Dibujar(BufferedGraphics^ buffer, Bitmap^ bmp) {
 	bmp->MakeTransparent(bmp->GetPixel(0, 0));
 	Rectangle porcion = Rectangle(ancho * indicex, indicey * alto, ancho, alto);
 	Rectangle aumento = Rectangle(x, y, ancho * 2, alto * 2);
@@ -42,16 +42,16 @@ void Beta2::Dibujar(BufferedGraphics^ buffer, Bitmap^ bmp) {
 
 }
 
-void Beta2::Mover(BufferedGraphics^ buffer, Bitmap^ bmp) {
-	if (indicex < 4)
+void Beta::Mover(BufferedGraphics^ buffer, Bitmap^ bmp) {
+	if (indicex < 5)
 		indicex++;
 	else
 		indicex = 0;
 	Dibujar(buffer, bmp);
 }
 
-Rectangle Beta2::getbeta2() { return Rectangle(x, y, ancho * 2, alto * 2); }
+Rectangle Beta::getbeta() { return Rectangle(x, y, ancho * 2, alto * 2); }
 
-void Beta2::setvisible(bool v) { visible = v; }
+void Beta::setvisible(bool v) { visible = v; }
 
-bool Beta2::getvisible() { return visible; }
+bool Beta::getvisible() { return visible; }
