@@ -32,9 +32,9 @@ public:
 		arr_balas.push_back(aux);
 	}
 
-	void movertodo(BufferedGraphics^ buffer, Bitmap^ bmp, Bitmap^ izq, Bitmap^ der, Bitmap^ pandillero) {
+	void movertodo(BufferedGraphics^ buffer, Bitmap^ bmp, Bitmap^ izq, Bitmap^ der, Bitmap^ pandillero,Heroe* objheroe) {
 		for (int i = 0; i < arr_balas.size(); i++)
-			arr_balas.at(i)->Mover(buffer, bmp);
+			arr_balas.at(i)->Mover(buffer, bmp,objheroe);
 		for (int j = 0; j < arr_alfa.size(); j++)
 			arr_alfa.at(j)->Mover(buffer, izq, der);
 		for (int k = 0; k < arr_beta.size(); k++)
@@ -53,7 +53,7 @@ public:
 
 	void agregarenemigo() {
 		for (int i = 0; i < num_a; i++) {
-			Alfa3* aux = new Alfa3(100 + rand() % 800, 400 + rand() % 30);
+			Alfa3* aux = new Alfa3(200 + rand() % 700, 400 + rand() % 30);
 			arr_alfa.push_back(aux);
 		}
 
