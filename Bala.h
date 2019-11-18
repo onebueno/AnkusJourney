@@ -21,20 +21,29 @@ public:
 	}
 	~Bala() {}
 
-	void Dibujar(BufferedGraphics^ buffer, Bitmap^ bmp) {
+	void Dibujar(BufferedGraphics^ buffer, Bitmap^ bmp, Heroe* objheroe) {
 		bmp->MakeTransparent(bmp->GetPixel(0, 0));
 		Rectangle porcion = Rectangle(ancho*indicex, indicey*alto, ancho, alto);
 		Rectangle aumento = Rectangle(x, y, ancho * 2, alto * 2);
 		buffer->Graphics->DrawImage(bmp, aumento, porcion, GraphicsUnit::Pixel);
+		switch (objheroe->ultimatecla)
+		{
+		case Direcciones::Izquierda:
+			dx = -45;
+			break;
+		case Direcciones::Derecha:
+			dx = 45;
+			break;
+		}
 		x += dx;
 	}
 
-	void Mover(BufferedGraphics^ buffer, Bitmap^ bmp) {
+	void Mover(BufferedGraphics^ buffer, Bitmap^ bmp ,Heroe* objheroe) {
 		if (indicex < 3)
 			indicex++;
 		else
 			indicex = 0;
-		Dibujar(buffer, bmp);
+		Dibujar(buffer, bmp,objheroe);
 	}
 
 	Rectangle getBala() {
