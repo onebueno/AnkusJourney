@@ -14,6 +14,8 @@ private:
 	int indicex;
 	int indicey;
 	bool flag;
+	int vidas;
+	int dificultad;
 public:
 	Heroe();
 	~Heroe();
@@ -26,6 +28,10 @@ public:
 	Rectangle GetHeroe();
 	Direcciones direccion;
 	Direcciones ultimatecla;
+	void setvidas(int _nvidas);
+	int getvidas();
+	void setdificultad(int _dificultad);
+	int getdificultad();
 };
 
 Heroe::Heroe() {}
@@ -164,4 +170,20 @@ void Heroe::parado(BufferedGraphics^ buffer, Bitmap^ bmp) {
 
 Rectangle Heroe::GetHeroe() {
 	return Rectangle(x, y, ancho * 2, alto * 2);
+}
+
+void Heroe::setvidas(int _nvidas) {
+	vidas = _nvidas;
+}
+
+int Heroe::getvidas() {
+	return vidas;
+}
+
+void Heroe::setdificultad(int _dificultad) {
+	dificultad = _dificultad;
+}
+
+int Heroe::getdificultad() {
+	return dificultad;
 }
