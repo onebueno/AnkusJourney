@@ -59,7 +59,7 @@ void Gamma3::Animar(BufferedGraphics^ buffer, Bitmap^ bmp) {
 	Dibujar(buffer, bmp);
 }
 
-Rectangle Gamma3::getgamma3() { return Rectangle(x, y, ancho * 0.7, alto * 0.7); }
+Rectangle Gamma3::getgamma3() { return Rectangle(x, y, ancho * 2, alto * 2); }
 
 void Gamma3::setvisible(bool v) { visible = v; }
 
