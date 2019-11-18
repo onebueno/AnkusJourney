@@ -25,6 +25,7 @@ namespace AJ {
 		Heroe* objheroe;
 		fondo* tren;
 		Bitmap^ bmpcoin;
+		Bitmap^ bmpcoinder;
 		Bitmap^ bmpparado;
 		Bitmap^ bmpderecha;
 		Bitmap^ bmpizquierda;
@@ -54,6 +55,7 @@ namespace AJ {
 		Bitmap^ terrorista;
 		int vidas;
 		int nivel;
+		int cont;
 	public:
 		AnkusJourney(void)
 		{
@@ -83,14 +85,17 @@ namespace AJ {
 			arreglo2 = new CControladora2();
 			arreglo3 = new CControladora3();
 			bmpcoin = gcnew Bitmap("coin.png");
+			bmpcoinder = gcnew Bitmap("coinder.png");
 			ladronizq = gcnew Bitmap("ladron.png");
 			ladronder = gcnew Bitmap("ladronder.png");
 			pandillero = gcnew Bitmap("pandillero.png");
 			terrorista = gcnew Bitmap("terrorista.png");
+			arreglo2 = new CControladora2();
 			nivel = 1;
 			arreglo->agregarenemigo();
 			arreglo2->agregarenemigo();
 			arreglo3->agregarenemigo();
+			cont = 0;
 		}
 
 	protected:
@@ -132,10 +137,9 @@ namespace AJ {
 			// 
 			// AnkusJourney
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1439, 678);
-			this->Margin = System::Windows::Forms::Padding(4);
+			this->ClientSize = System::Drawing::Size(1079, 551);
 			this->Name = L"AnkusJourney";
 			this->Text = L"AnkusJourney";
 			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &AnkusJourney::presionartecla);
@@ -151,33 +155,51 @@ namespace AJ {
 		buffer = espacio->Allocate(g, this->ClientRectangle);
 		buffer->Graphics->Clear(Color::White);
 		if (nivel == 1) {
-
 			buffer->Graphics->DrawImage(contaminacion, 0, -50, contaminacion->Width * 1.55, contaminacion->Height * 1.3);
-			buffer->Graphics->DrawImage(suelo, 0, 440, suelo->Width * 0.8, suelo->Height * 0.8);
-			arreglo->movertodo(buffer, hacha, trashcan, der, humo, fuego);
+			buffer->Graphics->DrawImage(suelo, 0, 440, suelo->Width * 0.8, suelo->Height* 0.8);
+			arreglo->movertodo(buffer, hacha, trashcan, der, humo,fuego,objheroe);
+			if (cont >= 0 && cont < 100) {
+				arreglo->movergamma(buffer, humo);
+			}
+			else
+				arreglo->invisiblegamma();
+			if (cont == 150)
+				cont = 0;
 			arreglo->colision(g);
 			if (arreglo->GetAlfasize() == 0 && arreglo->GetBetasize() == 0 && arreglo->GetGammasize() == 0)
 				nivel++;
 		}
 		if (nivel == 2) {
 			buffer->Graphics->DrawImage(corrupcion, 0, 0, corrupcion->Width * 0.60, corrupcion->Height * 0.50);
-
-			arreglo2->movertodo(buffer, hacha,bmpcoin,bmpcoin, dinero, ojo);
+			arreglo2->movertodo(buffer, hacha, bmpcoin, bmpcoinder,dinero,objheroe);
+			if (cont >= 0 && cont < 100) {
+				arreglo2->movergamma(buffer, ojo);
+			}
+			else
+				arreglo2->invisiblegamma();
+			if (cont == 150)
+				cont = 0;
 			arreglo2->colision(g);
-			if (arreglo2->GetBetasize() == 0 && arreglo2->GetGammasize() == 0)
+			if (arreglo2->GetBetasize() == 0 && arreglo2->GetAlfasize() == 0 && arreglo2->GetGammasize() == 0)
 				nivel++;
 		}
 		if (nivel == 3) {
 			tren->mover(buffer, train);
-			
-			arreglo3->movertodo(buffer, hacha, ladronizq, ladronder, terrorista, pandillero);
+			arreglo3->movertodo(buffer, hacha, ladronizq, ladronder, terrorista,objheroe);
+			if (cont >= 0 && cont < 100) {
+				arreglo3->movergamma(buffer, pandillero);
+			}
+			else
+				arreglo3->invisiblegamma();
+			if (cont == 150)
+				cont = 0;
 			arreglo3->colision(g);
+			if (arreglo3->GetAlfasize() == 0 && arreglo3->GetBetasize() == 0 && arreglo3->GetGammasize() == 0)
+				nivel++;
 		}
-
-		//arreglo->colision(g);
+		cont++;
 		objheroe->mover(buffer, bmpizquierda, bmpderecha, bmpparado, bmpparadoizq, ataque, g);
 		buffer->Render(g);
-
 		delete buffer;
 		delete espacio;
 		delete g;
@@ -195,9 +217,12 @@ namespace AJ {
 			break;
 		case Keys::P:
 			objheroe->direccion = Direcciones::Ataque;
-			arreglo->agregarbala(objheroe);
-			arreglo2->agregarbala(objheroe);
-			arreglo3->agregarbala(objheroe);
+			if (nivel == 1)
+				arreglo->agregarbala(objheroe);
+			if (nivel == 2)
+				arreglo2->agregarbala(objheroe);
+			if (nivel == 3)
+				arreglo3->agregarbala(objheroe);
 			break;
 		case Keys::W:
 			objheroe->direccion = Direcciones::Subir;
