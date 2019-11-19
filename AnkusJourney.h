@@ -53,9 +53,15 @@ namespace AJ {
 		Bitmap^ ladronder;
 		Bitmap^ pandillero;
 		Bitmap^ terrorista;
+		Bitmap^ bala;
+		Bitmap^ ganaste;
+		//BalaEn* bullet;
 		int vidas;
 		int nivel;
-		int cont;
+	private: System::Windows::Forms::Label^  labelpuntos;
+
+
+			 int cont;
 	public:
 		AnkusJourney(void)
 		{
@@ -90,7 +96,10 @@ namespace AJ {
 			ladronder = gcnew Bitmap("ladronder.png");
 			pandillero = gcnew Bitmap("pandillero.png");
 			terrorista = gcnew Bitmap("terrorista.png");
+			bala = gcnew Bitmap("circle.jpg");
+			ganaste = gcnew Bitmap("win.jpg");
 			arreglo2 = new CControladora2();
+			//bullet = new BalaEn(300,300);
 			nivel = 1;
 			arreglo->agregarenemigo();
 			arreglo2->agregarenemigo();
@@ -128,6 +137,7 @@ namespace AJ {
 		{
 			this->components = (gcnew System::ComponentModel::Container());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
+			this->labelpuntos = (gcnew System::Windows::Forms::Label());
 			this->SuspendLayout();
 			// 
 			// timer1
@@ -135,11 +145,23 @@ namespace AJ {
 			this->timer1->Enabled = true;
 			this->timer1->Tick += gcnew System::EventHandler(this, &AnkusJourney::timer1_Tick);
 			// 
+			// labelpuntos
+			// 
+			this->labelpuntos->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 19.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->labelpuntos->ForeColor = System::Drawing::SystemColors::AppWorkspace;
+			this->labelpuntos->Location = System::Drawing::Point(1175, 36);
+			this->labelpuntos->Name = L"labelpuntos";
+			this->labelpuntos->Size = System::Drawing::Size(127, 38);
+			this->labelpuntos->TabIndex = 0;
+			// 
 			// AnkusJourney
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1079, 551);
+			this->ClientSize = System::Drawing::Size(1439, 678);
+			this->Controls->Add(this->labelpuntos);
+			this->Margin = System::Windows::Forms::Padding(4);
 			this->Name = L"AnkusJourney";
 			this->Text = L"AnkusJourney";
 			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &AnkusJourney::presionartecla);
@@ -157,7 +179,10 @@ namespace AJ {
 		if (nivel == 1) {
 			buffer->Graphics->DrawImage(contaminacion, 0, -50, contaminacion->Width * 1.55, contaminacion->Height * 1.3);
 			buffer->Graphics->DrawImage(suelo, 0, 440, suelo->Width * 0.8, suelo->Height* 0.8);
-			arreglo->movertodo(buffer, hacha, trashcan, der, humo,fuego,objheroe);
+			//arreglo->agregarbalaalfa(objheroe);
+			//bullet->Dibujar(buffer, bala);
+			arreglo->movertodo(buffer, hacha, trashcan, der, humo,fuego,objheroe,bala);
+			
 			if (cont >= 0 && cont < 100) {
 				arreglo->movergamma(buffer, humo);
 			}
@@ -165,7 +190,9 @@ namespace AJ {
 				arreglo->invisiblegamma();
 			if (cont == 150)
 				cont = 0;
-			arreglo->colision(g);
+			arreglo->colision(g,objheroe);
+			int puntos  = arreglo->getpuntos();
+			labelpuntos->Text = Convert::ToString(puntos);
 			if (arreglo->GetAlfasize() == 0 && arreglo->GetBetasize() == 0 && arreglo->GetGammasize() == 0)
 				nivel++;
 		}
@@ -180,6 +207,8 @@ namespace AJ {
 			if (cont == 150)
 				cont = 0;
 			arreglo2->colision(g);
+			int puntos = arreglo2->getpuntos();
+			labelpuntos->Text = Convert::ToString(puntos);
 			if (arreglo2->GetBetasize() == 0 && arreglo2->GetAlfasize() == 0 && arreglo2->GetGammasize() == 0)
 				nivel++;
 		}
@@ -197,6 +226,8 @@ namespace AJ {
 			if (arreglo3->GetAlfasize() == 0 && arreglo3->GetBetasize() == 0 && arreglo3->GetGammasize() == 0)
 				nivel++;
 		}
+		if (nivel == 4)
+			buffer->Graphics->DrawImage(ganaste, 0, 0, ganaste->Width *3.5, ganaste->Height*3);
 		cont++;
 		objheroe->mover(buffer, bmpizquierda, bmpderecha, bmpparado, bmpparadoizq, ataque, g);
 		buffer->Render(g);
@@ -232,5 +263,5 @@ namespace AJ {
 			break;
 		}
 	}
-	};
+};
 }
