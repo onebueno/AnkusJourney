@@ -19,17 +19,25 @@ private:
 	int num_a;
 	int num_b;
 	int num_g;
+	int puntos;
 public:
 	CControladora2() {
 		num_a = 3 + rand() % 7;
 		num_b = 3 + rand() % 7;
 		num_g = 4 + rand() % 6;
+		puntos = 0;
 	}
 	~CControladora2() {}
 
 	void agregarbala(Heroe* heroe) {
-		Bala* aux = new Bala(heroe->getx() + 90, heroe->gety() + 30);
-		arr_balas.push_back(aux);
+		if (heroe->ultimatecla == Direcciones::Derecha) {
+			Bala* aux = new Bala(heroe->getx() + 90, heroe->gety() + 30);
+			arr_balas.push_back(aux);
+		}
+		if (heroe->ultimatecla == Direcciones::Izquierda) {
+			Bala* aux = new Bala(heroe->getx() - 30, heroe->gety() + 30);
+			arr_balas.push_back(aux);
+		}
 	}
 
 	void movertodo(BufferedGraphics^ buffer, Bitmap^ bmp,Bitmap^ izq, Bitmap^ der, Bitmap^ dinero,Heroe* objheroe) {
@@ -84,6 +92,7 @@ public:
 		for (int i = 0; i < arr_balas.size(); i++) {
 			for (int j = 0; j < arr_alfa.size(); j++) {
 				if (arr_balas.at(i)->getBala().IntersectsWith(arr_alfa.at(j)->getalfa2())) {
+					puntos += 10;
 					arr_balas.at(i)->setvisible(false);
 					arr_alfa.at(j)->setvisible(false);
 				}
@@ -93,6 +102,7 @@ public:
 		for (int i = 0; i < arr_balas.size(); i++) {
 			for (int j = 0; j < arr_beta.size(); j++) {
 				if (arr_balas.at(i)->getBala().IntersectsWith(arr_beta.at(j)->getbeta2())) {
+					puntos += 10;
 					arr_balas.at(i)->setvisible(false);
 					arr_beta.at(j)->setvisible(false);
 				}
@@ -102,6 +112,7 @@ public:
 		for (int i = 0; i < arr_balas.size(); i++) {
 			for (int j = 0; j < arr_gamma.size(); j++) {
 				if (arr_balas.at(i)->getBala().IntersectsWith(arr_gamma.at(j)->getgamma2())) {
+					puntos += 10;
 					arr_balas.at(i)->setvisible(false);
 					arr_gamma.at(j)->setvisible(false);
 				}
@@ -148,6 +159,10 @@ public:
 			}
 		}
 
+	}
+
+	int getpuntos() {
+		return puntos;
 	}
 
 };
